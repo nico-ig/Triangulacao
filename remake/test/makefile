@@ -1,0 +1,40 @@
+include variables.mk
+include $(PROJECT_DIR)/variables.mk
+
+HEADER_DIR = $(TEST_HEADER_DIR)
+SRC_DIR = $(TEST_SRC_DIR)
+OBJ_DIR = $(TEST_OBJ_DIR)
+
+TARGET ?= $(TEST_TARGET)
+
+PROJECT_HEADER_SUB_DIRS = $(shell find $(PROJECT_DIR)/$(PROJECT_HEADER_DIR) -type d)
+
+PROJECT_HEADER_PATHS = $(addprefix -I ,$(PROJECT_HEADER_DIR))
+PROJECT_HEADER_PATHS += $(addprefix -I ,$(PROJECT_HEADER_SUB_DIRS))
+
+CC = $(TEST_CC)
+CFLAGS = -I $(HEADER_DIR) $(PROJECT_HEADER_PATHS) $(TEST_CFLAGS)
+
+SRC = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp)
+OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
+OBJ_SUB_DIRS = $(sort $(dir $(OBJ)))
+
+$(shell mkdir -p $(OBJ_SUB_DIRS))
+
+.PHONY: test
+test: $(TARGET)
+	./$(TARGET)
+
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
+
+$(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+
+.PHONY: clean
+clean:
+	@rm -rf $(OBJ_DIR) vgcore*
+
+.PHONY: purge
+purge: clean
+	@rm -f $(TARGET)
