@@ -14,10 +14,10 @@ void restoreCin() {
 }
 
 TEST_CASE("Geometry Singleton") {
-  std::cout << "Running: Geometry Singleton\n";
+  std::cout << "Running: Geometry Singleton:";
 
   SUBCASE("Has only one instance") {
-    std::cout << "\t Has only one instance\n";
+    std::cout << " [Has only one instance]";
     Geometry *geometry1 = Geometry::getInstance();
     Geometry *geometry2 = Geometry::getInstance();
     
@@ -28,10 +28,10 @@ TEST_CASE("Geometry Singleton") {
 }
 
 TEST_CASE("Geometry Set Polygon") {
-  std::cout << "Running: Geometry Set Polygon\n";
+  std::cout << "Running: Geometry Set Polygon:";
 
   SUBCASE("Set empty polygon correctly") {
-    std::cout << "\t Set empty polygon correctly\n";
+    std::cout << " [Set empty polygon correctly]";
 
     Geometry *geometry = Geometry::getInstance();
     Polygon polygon;
@@ -64,12 +64,58 @@ TEST_CASE("Geometry Read Polygon") {
     std::istringstream mockInput("4\n1 4\n1 20\n15 20\n15 4");
 
     redirectCin(mockInput);
-    geometry->readPolygon();
+    Polygon polygon(geometry->readPolygon());
     restoreCin();
 
-    //CHECK(polygon == mockPolygon);
+    CHECK(polygon == mockPolygon);
+  }
+  std::cout << "\n";
+}
+
+TEST_CASE("Orientation") {
+  std::cout << "Running: Polygon orientation:";
+  Geometry *geometry = Geometry::getInstance();
+
+  SUBCASE("Collinear") {
+    std::cout << " [Collinear]";
+
+    Polygon p({{1, 1}, {1, 2}, {1, 3}});
+    geometry->setPolygon(p);
+    int ori = geometry->orientation();
+    
+    CHECK(ori == Geometry::COLLINEAR);
   }
 
+  SUBCASE("Clockwise") {
+    std::cout << " [Clockwise]";
+    Polygon p({{1, 1}, {2, 2}, {3, 1}});
+    geometry->setPolygon(p);
+    int ori = geometry->orientation();
+    
+    CHECK(ori == Geometry::CLOCKWISE);
+  }
+
+  SUBCASE("CounterClockwise") {
+    std::cout << " [CounterClockwise]";
+    Polygon p({{1, 1}, {3, 1}, {2, 2}});
+    geometry->setPolygon(p);
+    int ori = geometry->orientation();
+    
+    CHECK(ori == Geometry::COUNTERCLOCKWISE);
+
+  }
   std::cout << "\n";
+}
+
+TEST_CASE("Make polygon clockwise") {
+  std::cout << "Running: Make polygon clockwise\n";
+  Geometry *geometry = Geometry::getInstance();
+
+  Polygon p({{1, 1}, {3, 1}, {2, 2}});
+  geometry->setPolygon(p);
+  geometry->makeClockwise();
+
+  int ori = geometry->orientation();
+  CHECK(ori == Geometry::CLOCKWISE);
 }
 

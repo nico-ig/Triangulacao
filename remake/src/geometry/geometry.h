@@ -10,10 +10,18 @@ private:
   Geometry();
 
 public:
+  enum Direction {
+    COUNTERCLOCKWISE = -1,
+    COLLINEAR = 0,
+    CLOCKWISE = 1
+  };
   static Geometry* getInstance();
+
   void setPolygon(Polygon& poly);
   const Polygon& getPolygon();
   Polygon readPolygon();
+  int orientation();
+  void makeClockwise();
 };
 
 #endif

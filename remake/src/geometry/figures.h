@@ -6,13 +6,18 @@
 
 class Point {
 public:
-  std::pair<int, int> p;
+  std::vector<int> p;
   int& x, y;
   Point& operator=(const Point& other);
+  int& operator[](int index);
+  int operator[](int index) const;
 
   Point();
   Point(const Point& other);
   Point(const int& x, const int& y);
+  Point(const std::initializer_list<int>& init_list);
+
+  int size() const;
 };
 
 class Edge {
@@ -37,6 +42,9 @@ public:
   Polygon();
   Polygon(const Polygon& poly);
   Polygon(const std::initializer_list<Point>& init_list);
+
+  std::vector<Point>::iterator begin();
+  std::vector<Point>::iterator end();
 
   int size() const;
   void make_edges();
