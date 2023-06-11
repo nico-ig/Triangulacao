@@ -11,6 +11,9 @@ PROJECT_HEADER_SUB_DIRS = $(shell find $(PROJECT_DIR)/$(PROJECT_HEADER_DIR) -typ
 
 PROJECT_HEADER_PATHS = $(addprefix -I ,$(PROJECT_HEADER_DIR))
 PROJECT_HEADER_PATHS += $(addprefix -I ,$(PROJECT_HEADER_SUB_DIRS))
+PROJECT_OBJ_PATHS = $(wildcard $(PROJECT_DIR)/$(PROJECT_OBJ_DIR)/*.o)
+PROJECT_OBJ_PATHS += $(wildcard $(PROJECT_DIR)/$(PROJECT_OBJ_DIR)/**/*.o)
+PROJECT_OBJ_PATHS := $(filter-out %/main.o, $(PROJECT_OBJ_PATHS))
 
 CC = $(TEST_CC)
 CFLAGS = -I $(HEADER_DIR) $(PROJECT_HEADER_PATHS) $(TEST_CFLAGS)
@@ -26,10 +29,10 @@ test: $(TARGET)
 	./$(TARGET)
 
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) $(PROJECT_OBJ_PATHS)
 
-$(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
-	$(CC) $(CFLAGS) -c $< -o $@
+$(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp  
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 .PHONY: clean
 clean:

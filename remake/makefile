@@ -37,6 +37,6 @@ purge: clean
 	@$(MAKE) --no-print-directory -C $(TEST_DIR) purge
 
 .PHONY: test
-test: 
+test: $(TARGET)
 	@$(MAKE) --no-print-directory -C $(TEST_DIR)
 

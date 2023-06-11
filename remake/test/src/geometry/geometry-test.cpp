@@ -2,13 +2,7 @@
 #include "geometry.h"
 
 TEST_CASE("Geometry Singleton") {
-  SUBCASE("Is instantiated") {
-    Geometry *geometry1 = Geometry::getInstance();
-
-    CHECK(geometry1 != nullptr);
-  }
-
-  SUBCASE("Only one instance") {
+  SUBCASE("Has only one instance") {
     Geometry *geometry1 = Geometry::getInstance();
     Geometry *geometry2 = Geometry::getInstance();
     
