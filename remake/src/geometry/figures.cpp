@@ -68,6 +68,9 @@ std::vector<Point>::iterator Polygon::begin() {
 std::vector<Point>::iterator Polygon::end() {
   return vertices.end();
 }
+int Polygon::next(const int& i) {
+  return (i == (int)vertices.size() - 1)? 0 : i + 1;
+}
 void Polygon::make_edges() {
   size_t i;
   for ( i = 0; i < vertices.size() - 1; i++ ) {

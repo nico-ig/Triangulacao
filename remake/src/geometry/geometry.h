@@ -22,6 +22,7 @@ public:
   Polygon readPolygon();
   int orientation();
   void makeClockwise();
+  std::vector<Polygon> splitInEdge(int a, int b);
 };
 
 #endif

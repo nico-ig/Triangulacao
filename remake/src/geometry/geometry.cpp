@@ -54,3 +54,23 @@ void Geometry::makeClockwise() {
   std::reverse((*polygon).begin(), (*polygon).end());
 }
 
+std::vector<Polygon> Geometry::splitInEdge(int a, int b) {
+  std::vector<Polygon> split(2);
+
+  split[0].push_back((*polygon)[a]);
+  split[0].push_back((*polygon)[b]);
+  for ( int i = polygon->next(b); i != a; i = polygon->next(i) ) {
+    split[0].push_back((*polygon)[i]);
+  }
+
+  for ( int i = a; i != polygon->next(b); i = polygon->next(i) ) {
+    split[1].push_back((*polygon)[i]);
+  }
+
+  for ( int i = 0; i < 2; i++ ) {
+    split[i].make_edges();
+  }
+
+  return split;
+}
+

@@ -119,3 +119,21 @@ TEST_CASE("Make polygon clockwise") {
   CHECK(ori == Geometry::CLOCKWISE);
 }
 
+TEST_CASE("Split polygon in two") {
+  std::cout << "Running: Split polygon in two\n";
+  Geometry *geometry = Geometry::getInstance();
+  
+  std::vector<Polygon> split_expected;
+  split_expected.push_back({{2,1}, {3,4}, {1,1}});
+  split_expected.push_back({{2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4} ,{3,4}});
+  
+  Polygon p({{1,1}, {2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4}, {3,4}});
+  geometry->setPolygon(p);
+  std::vector<Polygon> split = geometry->splitInEdge(1, 8);
+
+  // for ( int i = 0; i < 2; i++ ) {
+  //   for ( int j = 0; j < split_expected[i].size(); j++ ) {
+  //     CHECK(split[i][j] == split_expected[i][j]);
+  //   }
+  // }
+}

@@ -46,6 +46,7 @@ public:
   std::vector<Point>::iterator begin();
   std::vector<Point>::iterator end();
 
+  int next(const int& i);
   int size() const;
   void make_edges();
   void push_back(const Point& p);
