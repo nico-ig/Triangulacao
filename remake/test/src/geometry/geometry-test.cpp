@@ -27,22 +27,6 @@ TEST_CASE("Geometry Singleton") {
   std::cout << "\n";
 }
 
-TEST_CASE("Geometry Set Polygon") {
-  std::cout << "Running: Geometry Set Polygon:";
-
-  SUBCASE("Set empty polygon correctly") {
-    std::cout << " [Set empty polygon correctly]";
-
-    Geometry *geometry = Geometry::getInstance();
-    Polygon polygon;
-    
-    geometry->setPolygon(polygon);
-    CHECK(geometry->getPolygon() == polygon);
-  }
-
-  std::cout << "\n";
-}
-
 TEST_CASE("Geometry Read Polygon") {
   std::cout << "Running: Geometry Read Polygon:";
 
@@ -54,6 +38,8 @@ TEST_CASE("Geometry Read Polygon") {
     redirectCin(mockInput);
     Polygon polygon(geometry->readPolygon());
     restoreCin();
+
+    CHECK(polygon.size() == 0);
   }
 
   SUBCASE("Read filled polygon") {
@@ -80,8 +66,7 @@ TEST_CASE("Orientation") {
     std::cout << " [Collinear]";
 
     Polygon p({{1, 1}, {1, 2}, {1, 3}});
-    geometry->setPolygon(p);
-    int ori = geometry->orientation();
+    int ori = geometry->orientation(p);
     
     CHECK(ori == Geometry::COLLINEAR);
   }
@@ -89,8 +74,7 @@ TEST_CASE("Orientation") {
   SUBCASE("Clockwise") {
     std::cout << " [Clockwise]";
     Polygon p({{1, 1}, {2, 2}, {3, 1}});
-    geometry->setPolygon(p);
-    int ori = geometry->orientation();
+    int ori = geometry->orientation(p);
     
     CHECK(ori == Geometry::CLOCKWISE);
   }
@@ -98,8 +82,7 @@ TEST_CASE("Orientation") {
   SUBCASE("CounterClockwise") {
     std::cout << " [CounterClockwise]";
     Polygon p({{1, 1}, {3, 1}, {2, 2}});
-    geometry->setPolygon(p);
-    int ori = geometry->orientation();
+    int ori = geometry->orientation(p);
     
     CHECK(ori == Geometry::COUNTERCLOCKWISE);
 
@@ -112,10 +95,9 @@ TEST_CASE("Make polygon clockwise") {
   Geometry *geometry = Geometry::getInstance();
 
   Polygon p({{1, 1}, {3, 1}, {2, 2}});
-  geometry->setPolygon(p);
-  geometry->makeClockwise();
+  geometry->makeClockwise(p);
 
-  int ori = geometry->orientation();
+  int ori = geometry->orientation(p);
   CHECK(ori == Geometry::CLOCKWISE);
 }
 
@@ -128,12 +110,11 @@ TEST_CASE("Split polygon in two") {
   split_expected.push_back({{2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4} ,{3,4}});
   
   Polygon p({{1,1}, {2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4}, {3,4}});
-  geometry->setPolygon(p);
-  std::vector<Polygon> split = geometry->splitInEdge(1, 8);
+  std::vector<Polygon> split = geometry->splitInEdge(p, 1, 8);
 
-  // for ( int i = 0; i < 2; i++ ) {
-  //   for ( int j = 0; j < split_expected[i].size(); j++ ) {
-  //     CHECK(split[i][j] == split_expected[i][j]);
-  //   }
-  // }
+  for ( int i = 0; i < 2; i++ ) {
+    for ( int j = 0; j < split_expected[i].size(); j++ ) {
+      CHECK(split[i][j] == split_expected[i][j]);
+    }
+  }
 }

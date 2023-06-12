@@ -6,7 +6,6 @@
 class Geometry {
 private:
   static Geometry* instance;
-  Polygon* polygon;
   Geometry();
 
 public:
@@ -17,12 +16,10 @@ public:
   };
   static Geometry* getInstance();
 
-  void setPolygon(Polygon& poly);
-  const Polygon& getPolygon();
   Polygon readPolygon();
-  int orientation();
-  void makeClockwise();
-  std::vector<Polygon> splitInEdge(int a, int b);
+  int orientation(const Polygon& poly);
+  void makeClockwise(Polygon& poly);
+  std::vector<Polygon> splitInEdge(const Polygon& poly, int a, int b);
 };
 
 #endif

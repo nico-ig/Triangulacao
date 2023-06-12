@@ -7,17 +7,22 @@ OBJ_DIR = $(PROJECT_OBJ_DIR)
 TEST_DIR = $(PROJECT_TEST_DIR)
 TARGET = $(PROJECT_TARGET)
   
-CC = $(PROJECT_CC)
-CFLAGS = -I$(HEADER_DIR) $(PROJECT_CFLAGS)
+HEADER_SUB_DIRS = $(shell find $(HEADER_DIR) -type d)
 
-SRC = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp)
+HEADER_PATHS = $(addprefix -I ,$(HEADER_DIR))
+HEADER_PATHS += $(addprefix -I ,$(HEADER_SUB_DIRS))
+
+CC = $(PROJECT_CC)
+CFLAGS = $(HEADER_PATHS) $(PROJECT_CFLAGS)
+
+SRC = $(shell find $(SRC_DIR) -type f -name '*.cpp')
 OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 OBJ_SUB_DIRS = $(sort $(dir $(OBJ)))
 
 $(shell mkdir -p $(OBJ_SUB_DIRS))
 
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) $(OBJ_PATHS)
 
 $(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@

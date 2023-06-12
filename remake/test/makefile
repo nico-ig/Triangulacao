@@ -11,14 +11,14 @@ PROJECT_HEADER_SUB_DIRS = $(shell find $(PROJECT_DIR)/$(PROJECT_HEADER_DIR) -typ
 
 PROJECT_HEADER_PATHS = $(addprefix -I ,$(PROJECT_HEADER_DIR))
 PROJECT_HEADER_PATHS += $(addprefix -I ,$(PROJECT_HEADER_SUB_DIRS))
-PROJECT_OBJ_PATHS = $(wildcard $(PROJECT_DIR)/$(PROJECT_OBJ_DIR)/*.o)
-PROJECT_OBJ_PATHS += $(wildcard $(PROJECT_DIR)/$(PROJECT_OBJ_DIR)/**/*.o)
+
+PROJECT_OBJ_PATHS = $(shell find $(PROJECT_DIR) -type f -name '*.o')
 PROJECT_OBJ_PATHS := $(filter-out %/main.o, $(PROJECT_OBJ_PATHS))
 
 CC = $(TEST_CC)
 CFLAGS = -I $(HEADER_DIR) $(PROJECT_HEADER_PATHS) $(TEST_CFLAGS)
 
-SRC = $(wildcard $(SRC_DIR)/*.cpp) $(wildcard $(SRC_DIR)/**/*.cpp)
+SRC = $(shell find $(SRC_DIR) -type f -name '*.cpp')
 OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 OBJ_SUB_DIRS = $(sort $(dir $(OBJ)))
 
