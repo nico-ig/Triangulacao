@@ -36,6 +36,10 @@ int& Point::operator[](int index) {
   return p[index];
 }
 
+int Point::operator[](int index) const {
+  return p[index];
+}
+
 int Point::size() const {
   return p.size();
 }

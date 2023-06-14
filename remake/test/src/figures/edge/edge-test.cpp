@@ -3,7 +3,7 @@
 #include "edge.h"
 
 TEST_CASE("Create an empty edge") {
-  std::cout <<"Running: Create an empty edge\n";
+  std::cout << "Running: Create an empty edge\n";
 
   Edge edge;
   CHECK(edge[0].x == 0);

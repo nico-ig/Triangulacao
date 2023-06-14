@@ -101,6 +101,38 @@ TEST_CASE("Make polygon clockwise") {
   CHECK(ori == Geometry::CLOCKWISE);
 }
 
+TEST_CASE("Intersect") {
+  std::cout << "Running: Edge intersect:";
+  Geometry *geometry = Geometry::getInstance();
+  Edge h({1,2}, {5,2});
+
+  SUBCASE("Intersect normal") {
+    std::cout << " [normal]";
+    Edge e({2,1}, {2,4});
+    CHECK(geometry->edgeIntersect(h, e) == true);
+  }
+
+  SUBCASE("Intersect collinear") {
+    std::cout << " [collinear]";
+    Edge e({2,2}, {7,2});
+    CHECK(geometry->edgeIntersect(h, e) == true);
+  }
+
+  SUBCASE("Intersect one vertice belongs to the other edge") {
+    std::cout << " [one vertice belongs to the other edge]";
+    Edge e({1,1}, {1,4});
+    CHECK(geometry->edgeIntersect(h, e) == true);
+  }
+  
+  SUBCASE("Dont intersect") {
+    std::cout << " [dont intersect]";
+    Edge e({6,1}, {6,4});
+    CHECK(geometry->edgeIntersect(h, e) == false);
+  }
+
+  std::cout << "\n";
+}
+
 TEST_CASE("Split polygon in two") {
   std::cout << "Running: Split polygon in two\n";
   Geometry *geometry = Geometry::getInstance();
@@ -117,4 +149,28 @@ TEST_CASE("Split polygon in two") {
       CHECK(split[i][j] == split_expected[i][j]);
     }
   }
+}
+
+TEST_CASE("Polygon contains point") {
+  std::cout << "Running: Polygon contains point:";
+
+  Polygon p({{1,1}, {2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4}, {3,4}});
+  Geometry *geometry = Geometry::getInstance();
+  
+  SUBCASE("Contains in middle") {
+    std::cout << " [Contains in middle]";
+    CHECK(geometry->polygonContainsPoint(p, {2,6}) == true);
+  }
+
+  SUBCASE("Contains in edge") {
+    std::cout << " [Contains in edge]";
+    CHECK(geometry->polygonContainsPoint(p, {4,4}) == true);
+  }
+
+  SUBCASE("Does not contains") {
+    std::cout << " [Does not contains]";
+    CHECK(geometry->polygonContainsPoint(p, {3,3}) == false);
+  }
+
+  std::cout << "\n";
 }

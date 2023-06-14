@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "geometry.h"
 
+#define oo 112345
+
 Geometry* Geometry::instance = new Geometry();
 
 Geometry::Geometry() {}
@@ -22,6 +24,14 @@ Polygon Geometry::readPolygon() {
   }
 
   return polygon;
+}
+
+int Geometry::findLeftmost(const Polygon& poly) {
+  int min = 0;
+  for ( int i = 1; i < poly.size(); i++ ) 
+    min = poly[i].x < poly[min].x ? i : min;
+
+  return min;
 }
 
 int Geometry::orientation(const Polygon& poly) {
@@ -46,6 +56,38 @@ void Geometry::makeClockwise(Polygon& poly) {
   std::reverse(poly.begin(), poly.end());
 }
 
+bool Geometry::edgeContainsCollinear(const Edge& ab, const Point& c) {
+  Point a = ab[0];
+  Point b = ab[1];
+
+  for ( int i = 0; i < c.size(); i++ ) {
+    int max = std::max(a[i], b[i]);
+    int min = std::max(a[i], b[i]);
+    if ( !((c[i] <= max) || (c[i] >= min)) ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+bool Geometry::edgeIntersect(const Edge& ab, const Edge& cd) {
+  Point a = ab[0];
+  Point b = ab[1];
+  Point c = cd[0];
+  Point d = cd[1];
+
+  int o_abc = orientation({a,b,c});
+  int o_abd = orientation({a,b,d});
+  int o_cda = orientation({c,d,a});
+  int o_cdb = orientation({c,d,b});
+
+  if ( (o_abc != o_abd) && (o_cda != o_cdb) ) return true;
+  if ( (o_abc!=0) || (o_abd!=0) || (o_cda!=0) || (o_cdb!=0) ) return false;
+
+  return edgeContainsCollinear(ab, c) || edgeContainsCollinear(cd, d);
+}
+
 std::vector<Polygon> Geometry::splitInEdge(const Polygon& poly, int a, int b) {
   std::vector<Polygon> split(2);
 
@@ -66,3 +108,19 @@ std::vector<Polygon> Geometry::splitInEdge(const Polygon& poly, int a, int b) {
   return split;
 }
 
+bool Geometry::polygonContainsPoint(const Polygon& poly, const Point& a) {
+  int cnt = 0;
+
+  Edge h {a, {oo, a.y}};
+  for ( Edge e : poly.edges ) {
+    if ( edgeIntersect(h, e) ) {
+      if ( orientation({e.a, a, e.b}) == COLLINEAR ) {
+        return edgeContainsCollinear(e, a); 
+      }
+
+      cnt++;
+    }
+  }
+
+  return cnt % 2;
+}

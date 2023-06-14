@@ -8,6 +8,7 @@ Polygon::Polygon(const Polygon& poly) :
 }
 
 Polygon::Polygon(const std::initializer_list<Point>& init_list) : vertices(init_list){
+  make_edges();
 }
 
 Point& Polygon::operator[](int index) { 
@@ -28,6 +29,10 @@ std::vector<Point>::iterator Polygon::end() {
 
 int Polygon::next(const int& i) const {
   return (i == (int)vertices.size() - 1)? 0 : i + 1;
+}
+
+int Polygon::previous(const int& i) const {
+  return (i == 0)? vertices.size() - 1 : i - 1;
 }
 
 void Polygon::make_edges() {
