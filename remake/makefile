@@ -12,8 +12,9 @@ HEADER_SUB_DIRS = $(shell find $(HEADER_DIR) -type d)
 HEADER_PATHS = $(addprefix -I ,$(HEADER_DIR))
 HEADER_PATHS += $(addprefix -I ,$(HEADER_SUB_DIRS))
 
+CLI_FLAGS = 
 CC = $(PROJECT_CC)
-CFLAGS = $(HEADER_PATHS) $(PROJECT_CFLAGS)
+CFLAGS = $(HEADER_PATHS) $(PROJECT_CFLAGS) $(CLI_FLAGS)
 
 SRC = $(shell find $(SRC_DIR) -type f -name '*.cpp')
 OBJ = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))

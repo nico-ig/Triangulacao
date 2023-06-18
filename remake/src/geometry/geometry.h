@@ -22,7 +22,7 @@ public:
   void makeClockwise(Polygon& poly);
   bool edgeContainsCollinear(const Edge& ab, const Point& c);
   bool edgeIntersect(const Edge& ab, const Edge& cd);
-  std::vector<Polygon> splitInEdge(const Polygon& poly, int a, int b);
+  std::vector<Polygon> splitInEdge(const Polygon& poly, const Edge& e);
   bool polygonContainsPoint(const Polygon& poly, const Point& a);
 };
 

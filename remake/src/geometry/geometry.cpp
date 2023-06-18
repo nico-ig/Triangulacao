@@ -56,14 +56,19 @@ void Geometry::makeClockwise(Polygon& poly) {
   std::reverse(poly.begin(), poly.end());
 }
 
+int findPoint(const std::vector<Point>& v, const Point& a) {
+  auto it = find(v.begin(), v.end(), a);
+  return it - v.begin();
+}
+
 bool Geometry::edgeContainsCollinear(const Edge& ab, const Point& c) {
   Point a = ab[0];
   Point b = ab[1];
 
   for ( int i = 0; i < c.size(); i++ ) {
     int max = std::max(a[i], b[i]);
-    int min = std::max(a[i], b[i]);
-    if ( !((c[i] <= max) || (c[i] >= min)) ) {
+    int min = std::min(a[i], b[i]);
+    if ( (c[i] > max) || (c[i] < min) ) {
       return false;
     }
   }
@@ -85,11 +90,13 @@ bool Geometry::edgeIntersect(const Edge& ab, const Edge& cd) {
   if ( (o_abc != o_abd) && (o_cda != o_cdb) ) return true;
   if ( (o_abc!=0) || (o_abd!=0) || (o_cda!=0) || (o_cdb!=0) ) return false;
 
-  return edgeContainsCollinear(ab, c) || edgeContainsCollinear(cd, d);
+  return edgeContainsCollinear(ab, c) || edgeContainsCollinear(ab, d);
 }
 
-std::vector<Polygon> Geometry::splitInEdge(const Polygon& poly, int a, int b) {
+std::vector<Polygon> Geometry::splitInEdge(const Polygon& poly, const Edge& e) {
   std::vector<Polygon> split(2);
+  int a = findPoint(poly.vertices, e.a);
+  int b = findPoint(poly.vertices, e.b);
 
   split[0].push_back(poly[a]);
   split[0].push_back(poly[b]);
@@ -101,7 +108,7 @@ std::vector<Polygon> Geometry::splitInEdge(const Polygon& poly, int a, int b) {
     split[1].push_back(poly[i]);
   }
 
-  for ( int i = 0; i < 2; i++ ) {
+  for ( int i = 0; i < e.a.size(); i++ ) {
     split[i].make_edges();
   }
 

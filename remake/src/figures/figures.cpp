@@ -5,6 +5,14 @@ bool operator==(const Point& lhs, const Point& rhs) {
   return (lhs.x == rhs.x && lhs.y == rhs.y);
 }
 
+bool operator!=(const Point& lhs, const Point& rhs) {
+  return !(lhs.x == rhs.x && lhs.y == rhs.y);
+}
+
+bool operator==(const Edge& lhs, const Edge& rhs) {
+  return (lhs.a==rhs.a && lhs.b==rhs.b) || (lhs.a==rhs.b && lhs.b==rhs.a);
+}
+
 bool operator==(const Polygon& lhs, const Polygon& rhs) {
   if ( lhs.size() != rhs.size() ) { 
     return false;
@@ -17,9 +25,5 @@ bool operator==(const Polygon& lhs, const Polygon& rhs) {
   }
 
   return true;
-}
-
-bool operator!=(const Point& lhs, const Point& rhs) {
-  return !(lhs.x == rhs.x && lhs.y == rhs.y);
 }
 

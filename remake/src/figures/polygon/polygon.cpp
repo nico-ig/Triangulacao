@@ -1,3 +1,4 @@
+#include <iostream>
 #include "polygon.h"
 
 Polygon::Polygon() {
@@ -8,6 +9,10 @@ Polygon::Polygon(const Polygon& poly) :
 }
 
 Polygon::Polygon(const std::initializer_list<Point>& init_list) : vertices(init_list){
+  for ( size_t i = 0; i < vertices.size(); i++ ) {
+    vertices[i].id = i + 1;
+  }
+
   make_edges();
 }
 
@@ -51,7 +56,7 @@ void Polygon::push_back(const Point& p) {
   vertices.push_back(p);
 
   int last_edge = edges.size() - 1;
-  if ( last_edge < 2 ) { return; }
+  if ( last_edge < p.size() ) { return; }
 
   edges[last_edge] = Edge(vertices[last_edge], p);
   edges.push_back(Edge(p, vertices[0]));

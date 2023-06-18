@@ -142,7 +142,7 @@ TEST_CASE("Split polygon in two") {
   split_expected.push_back({{2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4} ,{3,4}});
   
   Polygon p({{1,1}, {2,1}, {1,6}, {2,7}, {3,5}, {4,5}, {4,6}, {5,4}, {3,4}});
-  std::vector<Polygon> split = geometry->splitInEdge(p, 1, 8);
+  std::vector<Polygon> split = geometry->splitInEdge(p, {{2,1},{3,4}});
 
   for ( int i = 0; i < 2; i++ ) {
     for ( int j = 0; j < split_expected[i].size(); j++ ) {
