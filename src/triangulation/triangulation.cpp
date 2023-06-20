@@ -27,7 +27,11 @@ Triangulation::Triangulation(const Polygon& poly) : poly(poly) {
   Geometry *geometry = Geometry::getInstance();
 
   if ( geometry->orientation(this->poly) != Geometry::CLOCKWISE ) {
-    geometry->makeClockwise(this->poly); }
+    geometry->makeClockwise(this->poly); 
+    for ( int i = 0; i < this->poly.size(); i++ ) {
+      this->poly[i].id = i+1;
+    }
+  }
 
   id = 0;
   makeTriangulation(this->poly, {});
