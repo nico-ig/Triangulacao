@@ -2,7 +2,7 @@
 #include <type_traits>
 #include "point.h"
 
-Point::Point() : p(std::vector(2, 0)), x(p[0]), y(p[1]) {
+Point::Point() : p(std::vector<int>(2, 0)), x(p[0]), y(p[1]) {
 }
 
 Point::Point(const Point& other) : id(other.id), p(other.p), x(p[0]), y(p[1]) {

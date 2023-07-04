@@ -7,4 +7,4 @@ PROJECT_DIR = ..
 TEST_TARGET ?= test_executable
 
 TEST_CC = g++
-TEST_CFLAGS = -g -Wall -Wextra
+TEST_CFLAGS = -std=c++17 -g -Wall -Wextra

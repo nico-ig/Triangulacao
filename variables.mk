@@ -6,4 +6,4 @@ PROJECT_TEST_DIR = test
 PROJECT_TARGET ?= triangulacao
 
 PROJECT_CC = g++
-PROJECT_CFLAGS = -g -Wall -Wextra
+PROJECT_CFLAGS = -std=c++17 -g -Wall -Wextra
