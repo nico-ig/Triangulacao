@@ -30,7 +30,7 @@ $(shell mkdir -p $(OBJ_SUB_DIRS))
 test: $(TARGET)
 	./$(TARGET)
 
-$(TARGET): $(OBJ)
+$(TARGET): $(OBJ) $(PROJECT_OBJ_PATHS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) $(PROJECT_OBJ_PATHS)
 
 $(OBJ): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.cpp  

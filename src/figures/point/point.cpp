@@ -19,7 +19,7 @@ Point::Point(int id, const int& x, const int& y) : id(id), p(2, 0), x(p[0]), y(p
 }
 
 Point::Point(const std::initializer_list<int>& init_list) : 
-  p(std::vector(2, 0)), x(p[0]), y(p[1]) {
+  p(std::vector<int>(2, 0)), x(p[0]), y(p[1]) {
   if ( init_list.size() < 2 ) { 
     return;
   }
